@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/gurumurthy974/day2session.git'  // Replace with your actual repo URL
+                git branch: 'main', url: 'https://github.com/gurumurthy974/day2session.git'  // Replace with your actual repo URL
             }
         }
         stage('Build with Maven') {
