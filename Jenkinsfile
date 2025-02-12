@@ -1,21 +1,18 @@
-pipeline {
-    agent any
+@echo off
+setlocal
 
-    stages {
-        stage('Clone Repo') {
-            steps {
-                git branch: 'main', url: 'https://github.com/gurumurthy974/day2session.git'  // Replace with your actual repo URL
-            }
-        }
-        stage('Build with Maven') {
-            steps {
-                sh 'mvn clean package'  // Builds the JAR/WAR file
-            }
-        }
-        stage('Deploy with Ansible') {
-            steps {
-                sh 'ansible-playbook -i inventory.ini deploy.yml'  // Calls Ansible for deployment
-            }
-        }
-    }
-}
+:: Step 1: Clone the Git repository
+echo Cloning repository...
+git clone -b main https://github.com/gurumurthy974/day2session.git || exit /b
+cd day2session
+
+:: Step 2: Build with Maven
+echo Building project with Maven...
+call mvn clean package || exit /b
+
+:: Step 3: Deploy using Ansible
+echo Deploying with Ansible...
+call ansible-playbook -i inventory.ini deploy.yml || exit /b
+
+echo Deployment complete!
+endlocal
