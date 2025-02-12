@@ -1,18 +1,23 @@
-@echo off
-setlocal
+pipeline {
+    agent any
 
-:: Step 1: Clone the Git repository
-echo Cloning repository...
-git clone -b main https://github.com/gurumurthy974/day2session.git || exit /b
-cd day2session
+    stages {
+        stage('Clone Repo') {
+            steps {
+                git branch: 'main', url: 'https://github.com/gurumurthy974/day2session.git'
+            }
+        }
 
-:: Step 2: Build with Maven
-echo Building project with Maven...
-call mvn clean package || exit /b
+        stage('Build with Maven') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
 
-:: Step 3: Deploy using Ansible
-echo Deploying with Ansible...
-call ansible-playbook -i inventory.ini deploy.yml || exit /b
-
-echo Deployment complete!
-endlocal
+        stage('Deploy with Ansible') {
+            steps {
+                sh 'ansible-playbook -i inventory.ini deploy.yml'
+            }
+        }
+    }
+}
